@@ -62,6 +62,7 @@ public class Sort {
     /**
      * 插入排序
      * 思想：从第二个数开始，把它和它前面的数比较，如果前面的数大于它，就把前面的数放到他的位置，其实就是将其前面大于它的数向右移动，然后它将插入前面合适的位置。
+     * 时间复杂度：
      */
     private static void insertSort(int[] array){
         System.out.println(Arrays.toString(array));
@@ -94,21 +95,21 @@ public class Sort {
     //找到一个中间值，使得左边的数都小于等于它，右边的数都大于它
     private static int partition(int[] array,int start,int end){
         int last=array[end];
-        int center=start-1;
-        for (int i=start;i<=end-1;i++){
+        int center=start;
+        for (int i=start;i<end;i++){
             //从第一个元素开始，每个元素都和最后一个元素比较，每找到一个元素小于等于最后一个元素，就把这个元素向前移动，最后把最后一个元素移动到对应的位置，这样，
             //其前面的元素都小于等于此元素
             if (array[i]<=last){
-                center++;
                 int temp=array[center];
                 array[center]=array[i];
                 array[i]=temp;
+                center++;
             }
         }
-        int temp=array[center+1];
-        array[center+1]=array[end];
+        int temp=array[center];
+        array[center]=array[end];
         array[end]=temp;
-        return center+1;
+        return center;
     }
 
     /**
@@ -135,26 +136,20 @@ public class Sort {
         for (int i=0;i<left.length-1;i++){
             left[i]=array[start+i];
         }
+        left[leftCount]=Integer.MAX_VALUE;
         for (int i=0;i<right.length-1;i++){
             right[i]=array[center+1+i];
         }
+        right[rightCount]=Integer.MAX_VALUE;
         int i=0,j=0;
         //比较两个子数组的元素，把较小的元素填充到原数组里
         for (int k=start;k<=end;k++){
             if (left[i]<=right[j]){
                 array[k]=left[i];
                 i++;
-                //倒数第二个元素，如果左边小于右边，则左边的倒数第一的元素必须大于右边，否则右边的倒数第一的元素有可能被跳过了
-                if (i==left.length-1){
-                    left[i]=right[j]+1;
-                }
             }else {
                 array[k]=right[j];
                 j++;
-                //倒数第二个元素，如果右边小于左边，则右边的倒数第一的元素必须大于左边，否则左边的倒数第一的元素有可能被跳过了
-                if (j==right.length-1){
-                    right[j]=left[i]+1;
-                }
             }
         }
     }

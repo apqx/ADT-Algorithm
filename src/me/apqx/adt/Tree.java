@@ -1,5 +1,9 @@
 package me.apqx.adt;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.function.Consumer;
+
 /**
  * Created by apqx on 2017/4/15.
  * 二叉树的基于引用的实现
@@ -161,6 +165,82 @@ class BinaryTree<T> extends BinaryTreeBasis{
             root.setRightChild(new TreeNode<T>(data,null,null));
         }
     }
+}
+
+/**
+ * 使用递归实现二叉树的迭代器，本质上是通过递归将所有节点插入到一个队列中，迭代器依次访问这个队列。
+ * 不使用递归的话，也可以使用迭代来实现迭代器，本质上还是遍历整棵树，把每个节点都插入到队列中，只不过，迭代使用栈来记录轨迹和回溯。
+ * @param <T>
+ */
+class TreeIterator<T> implements Iterator<T>{
+    private TreeNode<T> currentNod;
+    private BinaryTreeBasis<T> binaryTree;
+    //使用LinkedList表示队列
+    private LinkedList<TreeNode<T>> queue;
+    public TreeIterator(BinaryTreeBasis<T> treeBasis){
+        this.binaryTree=treeBasis;
+        currentNod=null;
+        queue=new LinkedList<TreeNode<T>>();
+    }
+
+    @Override
+    public void remove() throws UnsupportedOperationException{
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return !queue.isEmpty();
+    }
+
+    @Override
+    public T next() {
+        currentNod=queue.remove();
+        return currentNod.getData();
+    }
+
+    /**
+     * 调用next()方法之前，必须先调用以下三种方法之一设置访问顺序
+     */
+    public void setPreorder(){
+        queue.clear();
+        preorder(binaryTree.root);
+    }
+    public void setInorder(){
+        queue.clear();
+        inorder(binaryTree.root);
+    }
+    public void setPostorder(){
+        queue.clear();
+        postorder(binaryTree.root);
+    }
+
+    /**
+     * 这三个方法通过递归的方式将树的节点插入到队列中，供迭代器访问。三种方法的插入顺序不同。
+     *
+     */
+    private void preorder(TreeNode<T> node){
+        if (node!=null){
+            queue.add(node);
+            preorder(node.getLeftChild());
+            preorder(node.getRightChild());
+        }
+    }
+    private void inorder(TreeNode<T> node){
+        if (node!=null){
+            inorder(node.getLeftChild());
+            queue.add(node);
+            inorder(node.getRightChild());
+        }
+    }
+    private void postorder(TreeNode<T> node){
+        if (node!=null){
+            postorder(node.getLeftChild());
+            postorder(node.getRightChild());
+            queue.add(node);
+        }
+    }
+
 }
 
 
