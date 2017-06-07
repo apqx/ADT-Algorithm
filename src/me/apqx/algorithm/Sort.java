@@ -97,12 +97,14 @@ public class Sort {
         int last=array[end];
         int center=start;
         for (int i=start;i<end;i++){
-            //从第一个元素开始，每个元素都和最后一个元素比较，每找到一个元素小于等于最后一个元素，就把这个元素向前移动，最后把最后一个元素移动到对应的位置，这样，
+            //从第一个元素开始，每个元素都和最后一个元素比较，每找到一个元素小于等于最后一个元素，就把这个元素移动到前面，最后把最后一个元素移动到对应的位置，这样，
             //其前面的元素都小于等于此元素
             if (array[i]<=last){
-                int temp=array[center];
-                array[center]=array[i];
-                array[i]=temp;
+                if (center!=i){
+                    int temp=array[i];
+                    array[i]=array[center];
+                    array[center]=temp;
+                }
                 center++;
             }
         }
