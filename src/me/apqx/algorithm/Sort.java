@@ -62,7 +62,7 @@ public class Sort {
     /**
      * 插入排序
      * 思想：从第二个数开始，把它和它前面的数比较，如果前面的数大于它，就把前面的数放到他的位置，其实就是将其前面大于它的数向右移动，然后它将插入前面合适的位置。
-     * 时间复杂度：
+     * 时间复杂度：n2
      */
     private static void insertSort(int[] array){
         System.out.println(Arrays.toString(array));
@@ -78,6 +78,32 @@ public class Sort {
             array[frontIndex+1]=current;
         }
         System.out.println(Arrays.toString(array));
+    }
+
+    /**
+     * 希尔排序，是一种增强的插入排序
+     * 思想：在要排序的数组中，根据某一增量分为若干子序列，并对子序列分别进行插入排序，然后逐渐将增量减小，重复这一过程，直到增量为0.
+     * 当增量为1时相当于普通的插入排序
+     * 时间复杂度：n*logn
+     */
+    public static void shellSort(int[] array){
+        int incre=array.length;
+        while (incre>0){
+            incre=incre/2;
+            for (int k=incre;k<array.length;k++){
+                int current;
+                int frontIndex;
+                for (int i=incre;i<array.length;i++){
+                    current=array[i];
+                    frontIndex=i-incre;
+                    while (frontIndex>=0&&array[frontIndex]>current){
+                        array[frontIndex+incre]=array[frontIndex];
+                        frontIndex-=incre;
+                    }
+                    array[frontIndex+incre]=current;
+                }
+            }
+        }
     }
 
     /**
@@ -112,6 +138,24 @@ public class Sort {
         array[center]=array[end];
         array[end]=temp;
         return center;
+    }
+    //双指针
+    private static int partitionDouble(int[] array,int start,int end){
+        int key=array[start];
+        while (start<end){
+            //从后半部分向前扫描
+            while (array[end]>=key&&end>start){
+                end--;
+            }
+            array[start]=array[end];
+            //从前半部分向后扫描
+            while (array[start]<=key&&end>start){
+                start++;
+            }
+            array[end]=array[start];
+        }
+        array[start]=key;
+        return start;
     }
 
     /**
