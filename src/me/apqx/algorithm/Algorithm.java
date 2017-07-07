@@ -109,6 +109,7 @@ public class Algorithm {
     }
 
     /**
+     * 动态规划
      * Coin Change
      * 找零钱问题，给定一个数组包含现有的零钱币值，给定一个整数，计算出使用现有的零钱凑够此整数共有几种方法。
      * 思路：定义一个二维数组dp[i][j]，表示使用前i个面值的硬币组成整数j的方案个数，则dp[i][j]可分为两种情况，使用第i个面值的硬币或不使用第
@@ -130,5 +131,36 @@ public class Algorithm {
             }
         }
         return dp[coins.length][amount];
+    }
+
+    /**
+     * 动态规划
+     * 爬格子问题，给定一个mxn矩阵，每个节点都包含一个数字，从（1,1）开始，每次只能向下或向右走一个格子，要求到达(m,n)，求走过路径中数字和最大的路径，和那个数字
+     * 思路：定义一个数组dp[i][j]，表示走到(i,j)时的数字和，则dp[i][j]=max(dp[i-1][j],dp[i][j-1])+array[i][j]，其中，当i=1时,dp[i][j]=dp[i][j-1]+array[i][j],
+     * 当j=1时,dp[i][j]=dp[i-1][j]+array[i][j]。
+     * @param array 包含每个节点数字的数组
+     * @param m 要到达的节点
+     * @param n 要到达的节点
+     * @return 最大的数字和
+     */
+    private static int maxNum(int[][] array,int m,int n){
+        int[][] dp=new int[m+1][n+1];
+        dp[1][1]=array[1][1];
+        for (int i=1;i<=m;i++){
+            for (int j=1;j<=n;j++){
+                if (i>1&&j>1){
+                    //在这里可以记录走过的路径
+                    dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1])+array[i][j];
+                }else {
+                    if (i==1&&j>1){
+                        dp[i][j]=dp[i][j-1]+array[i][j];
+                    }
+                    if (i>1&&j==1){
+                        dp[i][j]=dp[i-1][j]+array[i][j];
+                    }
+                }
+            }
+        }
+        return dp[m][n];
     }
 }

@@ -90,18 +90,16 @@ public class Sort {
         int incre=array.length;
         while (incre>0){
             incre=incre/2;
-            for (int k=incre;k<array.length;k++){
-                int current;
-                int frontIndex;
-                for (int i=incre;i<array.length;i++){
-                    current=array[i];
-                    frontIndex=i-incre;
-                    while (frontIndex>=0&&array[frontIndex]>current){
-                        array[frontIndex+incre]=array[frontIndex];
-                        frontIndex-=incre;
-                    }
-                    array[frontIndex+incre]=current;
+            int current;
+            int fi;
+            for (int i=incre;i<array.length;i++){
+                current=array[i];
+                fi=i-incre;
+                while (fi>=0&&array[fi]>current){
+                    array[fi+incre]=array[fi];
+                    fi-=incre;
                 }
+                array[fi+incre]=current;
             }
         }
     }
