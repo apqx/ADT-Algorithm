@@ -163,4 +163,38 @@ public class Algorithm {
         }
         return dp[m][n];
     }
+
+    /**
+     * Add two numbers
+     * 给出两个非空链表，里面是非负整数，每一个链表的所有数字代表一个整数，不过小位在前，比如234，个位是2，百位是4，把这两个链表表示的数字相加，
+     * 结果也是小位在前的链表，求结果
+     * 比如：123+284=308
+     */
+    static class ListNode{
+        private int val;
+        private ListNode next;
+        public ListNode(int digit){
+            this.val=digit;
+        }
+    }
+
+    private static ListNode addTwoNumbers(ListNode n1,ListNode n2){
+        ListNode dummyHead = new ListNode(0);
+        ListNode temp = dummyHead;
+        int carry = 0;
+        while (n1 != null || n2 != null) {
+            int x = (n1 != null) ? n1.val : 0;
+            int y = (n2 != null) ? n2.val : 0;
+            int sum = carry + x + y;
+            carry = sum / 10;
+            dummyHead.next = new ListNode(sum % 10);
+            dummyHead = dummyHead.next;
+            if (n1 != null) n1 = n1.next;
+            if (n2 != null) n2 = n2.next;
+        }
+        if (carry > 0) {
+            dummyHead.next = new ListNode(carry);
+        }
+        return temp.next;
+    }
 }
