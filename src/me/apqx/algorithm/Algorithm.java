@@ -197,4 +197,28 @@ public class Algorithm {
         }
         return temp.next;
     }
+
+    /**
+     * Longest subString without repeating characters
+     * 给定一个字符串，找出不含有重复字符的最大子字符串，返回其长度.
+     * 直觉：遍历所有的子序列，用一个方法来判断其是否有重复元素，找出没有重复元素的最长子序列。时间复杂度为n3
+     * 思路：视图滑动思想，从第一个元素开始，逐渐增加元素，当下一个元素和这个序列中的元素重复时，序列的起始点移动到序列中与其重复的元素的下一个位置，继续
+     * 向下执行，每次都将当前序列的长度和上一个移动前序列的长度比较，获得最大值
+     */
+    public static int   lengthOfLongestSubstring(String string){
+        int n = string.length();
+        Set<Character> set = new HashSet<>();
+        int ans = 0, i = 0, j = 0;
+        while (i < n && j < n) {
+            // 扩展序列 [i, j]
+            if (!set.contains(string.charAt(j))){
+                set.add(string.charAt(j++));
+                ans = Math.max(ans, j - i);
+            }
+            else {
+                set.remove(string.charAt(i++));
+            }
+        }
+        return ans;
+    }
 }
